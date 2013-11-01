@@ -132,7 +132,7 @@ namespace LoveSeat
         {
             // serialize list of keys to json
             string data = Newtonsoft.Json.JsonConvert.SerializeObject(keyLst);
-            ViewOptions viewOptions = new ViewOptions
+            IViewOptions viewOptions = new ViewOptions
             {
                 IncludeDocs = true,
                 Keys = keyLst.Values.Select(x => new KeyOptions(x)).ToArray()
@@ -367,14 +367,14 @@ namespace LoveSeat
             var req = GetRequest(uri);
             return req.GetCouchResponse().ResponseString;
         }
-        public IListResult List(string listName, string viewName, ViewOptions options, string designDoc)
+        public IListResult List(string listName, string viewName, IViewOptions options, string designDoc)
         {
             var uri = string.Format("{0}/_design/{1}/_list/{2}/{3}{4}", databaseBaseUri, designDoc, listName, viewName, options.ToString());
             var req = GetRequest(uri);
             return new ListResult(req.GetRequest(), req.GetCouchResponse());
         }
 
-        public IListResult List(string listName, string viewName, ViewOptions options)
+        public IListResult List(string listName, string viewName, IViewOptions options)
         {
             ThrowDesignDocException();
             return List(listName, viewName, options, defaultDesignDoc);
@@ -385,7 +385,7 @@ namespace LoveSeat
             this.defaultDesignDoc = designDoc;
         }
 
-        private IViewResult<T> ProcessGenericResults<T>(string uri, ViewOptions options)
+        private IViewResult<T> ProcessGenericResults<T>(string uri, IViewOptions options)
         {
             CouchRequest req = GetRequest(options, uri);
             CouchResponse resp = req.GetCouchResponse();
@@ -405,7 +405,7 @@ namespace LoveSeat
         /// <param name="options">Options such as startkey etc.</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        public IViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc)
+        public IViewResult<T> View<T>(string viewName, IViewOptions options, string designDoc)
         {
             var uri = string.Format("{0}/_design/{1}/_view/{2}", databaseBaseUri, designDoc, viewName);
             return ProcessGenericResults<T>(uri, options);
@@ -417,36 +417,36 @@ namespace LoveSeat
         /// <param name="viewName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IViewResult<T> View<T>(string viewName, ViewOptions options)
+        public IViewResult<T> View<T>(string viewName, IViewOptions options)
         {
             ThrowDesignDocException();
             return View<T>(viewName, options, defaultDesignDoc);
         }
 
-        public IViewResult View(string viewName, ViewOptions options, string designDoc)
+        public IViewResult View(string viewName, IViewOptions options, string designDoc)
         {
             var uri = string.Format("{0}/_design/{1}/_view/{2}", databaseBaseUri, designDoc, viewName);
             return ProcessResults(uri, options);
         }
 
-        public IViewResult View(string viewName, ViewOptions options)
+        public IViewResult View(string viewName, IViewOptions options)
         {
             ThrowDesignDocException();
             return View(viewName, options, this.defaultDesignDoc);
         }
-        private IViewResult ProcessResults(string uri, ViewOptions options)
+        private IViewResult ProcessResults(string uri, IViewOptions options)
         {
             CouchRequest req = GetRequest(options, uri);
             CouchResponse resp = req.GetCouchResponse();
             return new ViewResult(resp, req.GetRequest());
         }
 
-        private CouchRequest GetRequest(ViewOptions options, string uri)
+        private CouchRequest GetRequest(IViewOptions options, string uri)
         {
             if (options != null)
                 uri += options.ToString();
             CouchRequest request = GetRequest(uri, options == null ? null : options.Etag).Get().Json();
-            if (options.isAtKeysSizeLimit)
+            if (options.IsAtKeysSizeLimit)
             {
                 // Encode the keys parameter in the request body and turn it into a POST request.
                 string keys = "{\"keys\": [" + String.Join(",", options.Keys.Select(k => k.ToRawString()).ToArray()) + "]}";
@@ -465,7 +465,7 @@ namespace LoveSeat
             var uri = databaseBaseUri + "/_all_docs";
             return ProcessResults(uri, null);
         }
-        public IViewResult GetAllDocuments(ViewOptions options)
+        public IViewResult GetAllDocuments(IViewOptions options)
         {
             var uri = databaseBaseUri + "/_all_docs";
             return ProcessResults(uri, options);

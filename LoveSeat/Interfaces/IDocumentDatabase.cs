@@ -76,7 +76,7 @@ namespace LoveSeat.Interfaces
         /// <param name="options">Options such as startkey etc.</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        IViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc);
+        IViewResult<T> View<T>(string viewName, IViewOptions options, string designDoc);
 
         /// <summary>
         /// Gets all the documents in the database using the _all_docs uri
@@ -84,7 +84,7 @@ namespace LoveSeat.Interfaces
         /// <returns></returns>
         IViewResult GetAllDocuments();
 
-        IViewResult GetAllDocuments(ViewOptions options);
+        IViewResult GetAllDocuments(IViewOptions options);
 
         /// <summary>
         /// Gets the results of the view using the defaultDesignDoc and no view parameters.  Use the overloads to specify options.
@@ -101,16 +101,16 @@ namespace LoveSeat.Interfaces
         /// <param name="viewName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        IViewResult<T>  View<T>(string viewName, ViewOptions options);
+        IViewResult<T>  View<T>(string viewName, IViewOptions options);
 
         T GetDocument<T>(Guid id , IObjectSerializer objectSerializer);
         T GetDocument<T>(Guid id);
         string Show (string showName, string docId);
-        IListResult List(string listName, string viewName, ViewOptions options,  string designDoc);
-        IListResult List(string listName, string viewName, ViewOptions options);
+        IListResult List(string listName, string viewName, IViewOptions options,  string designDoc);
+        IListResult List(string listName, string viewName, IViewOptions options);
 
-        IViewResult View(string viewName, ViewOptions options, string designDoc);
-        IViewResult View(string viewName, ViewOptions options);
+        IViewResult View(string viewName, IViewOptions options, string designDoc);
+        IViewResult View(string viewName, IViewOptions options);
         IViewResult View(string viewName);
 
         /// <summary>

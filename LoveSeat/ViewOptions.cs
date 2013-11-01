@@ -56,7 +56,7 @@ namespace LoveSeat
             string result = "";
             if ((Key != null) && (Key.Count > 0))
                 result += "&key=" + Key.ToString();
-            if (Keys != null && !isAtKeysSizeLimit)
+            if (Keys != null && !IsAtKeysSizeLimit)
               result += "&keys=[" + BuildKeysString() + "]";
             if ((StartKey != null) && (StartKey.Count > 0))
                 if((StartKey.Count == 1) && (EndKey.Count > 1))
@@ -113,7 +113,7 @@ namespace LoveSeat
         /// This indicate that the Keys parameter should be encoded in the requeqst body
         /// instead of URL paraemter.
         /// </summary>
-        internal bool isAtKeysSizeLimit
+        public bool IsAtKeysSizeLimit
         {
           get { return Keys != null && Keys.Any() && BuildKeysString().Length > KeysLengthLimit; }
         }

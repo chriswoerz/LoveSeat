@@ -22,6 +22,14 @@ namespace LoveSeat.Interfaces
         string Etag { get; set; }
         string StartKeyDocId { get; set; }
         string EndKeyDocId { get; set; }
+
+        /// <summary>
+        /// Get indication if the length of keys parameter went over the allowed limit.
+        /// This indicate that the Keys parameter should be encoded in the requeqst body
+        /// instead of URL paraemter.
+        /// </summary>
+        bool IsAtKeysSizeLimit { get; }
+
         string ToString();
     }
 }
