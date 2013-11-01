@@ -128,7 +128,7 @@ namespace LoveSeat
         /// </summary>
         /// <param name="keyLst"></param>
         /// <returns></returns>
-        public ViewResult GetDocuments(Keys keyLst)
+        public IViewResult GetDocuments(Keys keyLst)
         {
             // serialize list of keys to json
             string data = Newtonsoft.Json.JsonConvert.SerializeObject(keyLst);
@@ -144,7 +144,7 @@ namespace LoveSeat
 
             if (resp.StatusCode == HttpStatusCode.NotFound) return null;
 
-            ViewResult vw = new ViewResult(resp, null);
+            IViewResult vw = new ViewResult(resp, null);
 
             return vw;
         }
@@ -280,7 +280,7 @@ namespace LoveSeat
         /// <param name="viewName">The name of the view</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        public ViewResult<T> View<T>(string viewName, string designDoc)
+        public IViewResult<T> View<T>(string viewName, string designDoc)
         {
             return View<T>(viewName, null, designDoc);
         }
@@ -291,12 +291,12 @@ namespace LoveSeat
         /// <typeparam name="T"></typeparam>
         /// <param name="viewName"></param>
         /// <returns></returns>
-        public ViewResult<T> View<T>(string viewName)
+        public IViewResult<T> View<T>(string viewName)
         {
             ThrowDesignDocException();
             return View<T>(viewName, defaultDesignDoc);
         }
-        public ViewResult View(string viewName)
+        public IViewResult View(string viewName)
         {
             ThrowDesignDocException();
             return View(viewName, new ViewOptions());
@@ -385,7 +385,7 @@ namespace LoveSeat
             this.defaultDesignDoc = designDoc;
         }
 
-        private ViewResult<T> ProcessGenericResults<T>(string uri, ViewOptions options)
+        private IViewResult<T> ProcessGenericResults<T>(string uri, ViewOptions options)
         {
             CouchRequest req = GetRequest(options, uri);
             CouchResponse resp = req.GetCouchResponse();
@@ -405,7 +405,7 @@ namespace LoveSeat
         /// <param name="options">Options such as startkey etc.</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        public ViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc)
+        public IViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc)
         {
             var uri = string.Format("{0}/_design/{1}/_view/{2}", databaseBaseUri, designDoc, viewName);
             return ProcessGenericResults<T>(uri, options);
@@ -417,24 +417,24 @@ namespace LoveSeat
         /// <param name="viewName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public ViewResult<T> View<T>(string viewName, ViewOptions options)
+        public IViewResult<T> View<T>(string viewName, ViewOptions options)
         {
             ThrowDesignDocException();
             return View<T>(viewName, options, defaultDesignDoc);
         }
 
-        public ViewResult View(string viewName, ViewOptions options, string designDoc)
+        public IViewResult View(string viewName, ViewOptions options, string designDoc)
         {
             var uri = string.Format("{0}/_design/{1}/_view/{2}", databaseBaseUri, designDoc, viewName);
             return ProcessResults(uri, options);
         }
 
-        public ViewResult View(string viewName, ViewOptions options)
+        public IViewResult View(string viewName, ViewOptions options)
         {
             ThrowDesignDocException();
             return View(viewName, options, this.defaultDesignDoc);
         }
-        private ViewResult ProcessResults(string uri, ViewOptions options)
+        private IViewResult ProcessResults(string uri, ViewOptions options)
         {
             CouchRequest req = GetRequest(options, uri);
             CouchResponse resp = req.GetCouchResponse();
@@ -460,12 +460,12 @@ namespace LoveSeat
         /// Gets all the documents in the database using the _all_docs uri
         /// </summary>
         /// <returns></returns>
-        public ViewResult GetAllDocuments()
+        public IViewResult GetAllDocuments()
         {
             var uri = databaseBaseUri + "/_all_docs";
             return ProcessResults(uri, null);
         }
-        public ViewResult GetAllDocuments(ViewOptions options)
+        public IViewResult GetAllDocuments(ViewOptions options)
         {
             var uri = databaseBaseUri + "/_all_docs";
             return ProcessResults(uri, options);

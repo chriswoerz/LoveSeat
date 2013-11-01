@@ -67,7 +67,7 @@ namespace LoveSeat.Interfaces
         /// <param name="viewName">The name of the view</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        ViewResult<T> View<T>(string viewName, string designDoc);
+        IViewResult<T> View<T>(string viewName, string designDoc);
 
         /// <summary>
         /// Gets the results of the view using any and all parameters
@@ -76,15 +76,15 @@ namespace LoveSeat.Interfaces
         /// <param name="options">Options such as startkey etc.</param>
         /// <param name="designDoc">The design doc on which the view resides</param>
         /// <returns></returns>
-        ViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc);
+        IViewResult<T> View<T>(string viewName, ViewOptions options, string designDoc);
 
         /// <summary>
         /// Gets all the documents in the database using the _all_docs uri
         /// </summary>
         /// <returns></returns>
-        ViewResult GetAllDocuments();
+        IViewResult GetAllDocuments();
 
-        ViewResult GetAllDocuments(ViewOptions options);
+        IViewResult GetAllDocuments(ViewOptions options);
 
         /// <summary>
         /// Gets the results of the view using the defaultDesignDoc and no view parameters.  Use the overloads to specify options.
@@ -92,7 +92,7 @@ namespace LoveSeat.Interfaces
         /// <typeparam name="T"></typeparam>
         /// <param name="viewName"></param>
         /// <returns></returns>
-        ViewResult<T> View<T>(string viewName);
+        IViewResult<T> View<T>(string viewName);
 
         /// <summary>
         /// Allows you to specify options and uses the defaultDesignDoc Specified.
@@ -101,7 +101,7 @@ namespace LoveSeat.Interfaces
         /// <param name="viewName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        ViewResult<T>  View<T>(string viewName, ViewOptions options);
+        IViewResult<T>  View<T>(string viewName, ViewOptions options);
 
         T GetDocument<T>(Guid id , IObjectSerializer objectSerializer);
         T GetDocument<T>(Guid id);
@@ -109,9 +109,9 @@ namespace LoveSeat.Interfaces
         IListResult List(string listName, string viewName, ViewOptions options,  string designDoc);
         IListResult List(string listName, string viewName, ViewOptions options);
 
-        ViewResult View(string viewName, ViewOptions options, string designDoc);
-        ViewResult View(string viewName, ViewOptions options);
-        ViewResult View(string viewName);
+        IViewResult View(string viewName, ViewOptions options, string designDoc);
+        IViewResult View(string viewName, ViewOptions options);
+        IViewResult View(string viewName);
 
         /// <summary>
         /// Set the timeout to be used for future HTTP requests

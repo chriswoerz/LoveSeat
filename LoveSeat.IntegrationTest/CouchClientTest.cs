@@ -172,7 +172,7 @@ namespace LoveSeat.IntegrationTest
         {
             var db = client.GetDatabase(baseDatabase);
             db.CreateDocument(@"{""_id"":""test_eTag""}");
-            ViewResult result = db.GetAllDocuments();
+            IViewResult result = db.GetAllDocuments();
            Assert.IsTrue(!string.IsNullOrEmpty(result.Etag));
         }
 
@@ -206,8 +206,8 @@ namespace LoveSeat.IntegrationTest
 	    {
             var db = client.GetDatabase(baseDatabase);
             db.CreateDocument(@"{""_id"":""test_eTag_exception""}");
-            ViewResult result = db.GetAllDocuments();
-	        ViewResult cachedResult = db.GetAllDocuments(new ViewOptions {Etag = result.Etag});
+            IViewResult result = db.GetAllDocuments();
+	        IViewResult cachedResult = db.GetAllDocuments(new ViewOptions {Etag = result.Etag});
             Assert.AreEqual(cachedResult.StatusCode, HttpStatusCode.NotModified);
 	    } 
         [Test]
